@@ -189,7 +189,7 @@ img.dark-img{display:none}
 /* ---------- Page images ---------- */
 .banner{margin:0;border-radius:16px;overflow:hidden;background:var(--surface)}
 .banner img{width:100%;height:auto}
-.banner .light-img, .banner .dark-img{ width: 400px;}
+.banner .light-img, .banner .dark-img{ width: 200px;}
 #services .banner{margin:0 0 30px}
 #services .banner img{aspect-ratio:16/9;object-fit:cover}
 .page-hero.split .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
