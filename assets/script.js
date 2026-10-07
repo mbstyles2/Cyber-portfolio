@@ -39,3 +39,17 @@
 })();
 
 (function(){var f=document.getElementById('contact-form');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f);var body='Name: '+d.get('name')+'\nEmail: '+d.get('email')+'\nPhone: '+(d.get('phone')||'-')+'\nService of interest: '+d.get('service')+'\n\n'+d.get('message');location.href='mailto:info@nexfortified.com?subject='+encodeURIComponent('Enquiry from '+d.get('name'))+'&body='+encodeURIComponent(body);});})();
+
+(function(){
+  var dd=document.querySelector('.dropdown'); if(!dd) return;
+  var btn=dd.querySelector('.dd-btn');
+  function set(o){dd.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);}
+  btn.addEventListener('click',function(){set(!dd.classList.contains('open'));});
+  document.addEventListener('click',function(e){if(!dd.contains(e.target)) set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&dd.classList.contains('open')){set(false);btn.focus();}});
+  dd.addEventListener('focusout',function(e){if(!dd.contains(e.relatedTarget)) set(false);});
+  if(window.matchMedia('(hover:hover)').matches){
+    dd.addEventListener('mouseenter',function(){set(true);});
+    dd.addEventListener('mouseleave',function(){set(false);});
+  }
+})();
