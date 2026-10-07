@@ -53,3 +53,21 @@
     dd.addEventListener('mouseleave',function(){set(false);});
   }
 })();
+
+
+const menuToggle = document.getElementById("menu-toggle");
+const nav = document.querySelector("nav");
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = nav.classList.toggle("open");
+
+  menuToggle.setAttribute("aria-expanded", isOpen);
+  menuToggle.setAttribute(
+    "aria-label",
+    isOpen ? "Close menu" : "Open menu"
+  );
+
+  menuToggle.innerHTML = isOpen
+    ? '<i class="fa-solid fa-xmark"></i>'
+    : '<i class="fa-solid fa-bars"></i>';
+});
