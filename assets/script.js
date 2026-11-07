@@ -38,7 +38,7 @@
   });
 })();
 
-(function(){var f=document.getElementById('contact-form');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f);var body='Name: '+d.get('name')+'\nEmail: '+d.get('email')+'\nPhone: '+(d.get('phone')||'-')+'\nService of interest: '+d.get('service')+'\n\n'+d.get('message');location.href='mailto:info@nexfortified.com?subject='+encodeURIComponent('Enquiry from '+d.get('name'))+'&body='+encodeURIComponent(body);});})();
+(function(){var f=document.getElementById('contact-form');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(f);var body='Name: '+d.get('name')+'\nEmail: '+d.get('email')+'\nPhone: '+(d.get('phone')||'-')+'\nServices of interest: '+(d.getAll('service').join(', ')||'-')+'\n\n'+d.get('message');location.href='mailto:info@nexfortified.com?subject='+encodeURIComponent('Enquiry from '+d.get('name'))+'&body='+encodeURIComponent(body);});})();
 
 (function(){
   var dd=document.querySelector('.dropdown'); if(!dd) return;
