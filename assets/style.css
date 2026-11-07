@@ -1,8 +1,9 @@
 :root{
-  --bg:#F1F5F8; --surface:#E3EBF1; --text:#050D13; --muted:#2A3D4A; --line:#C4D1DB;
+  --bg:#F1F5F8; --surface:#E3EBF1; --text:#050D13; --muted:#1B2C37; --line:#C4D1DB;
   --accent:#1B6FA8; --accent-ink:#FFFFFF; --tick:#1B6FA8; --empty:#D3DEE6;
   --bg-image:url("bg-white.jpg");
   --bg-overlay:rgba(255,255,255,.35);
+  --body-weight:600;
   --display:"Bricolage Grotesque","Segoe UI",Arial,sans-serif;
   --body:"Public Sans","Segoe UI",Arial,sans-serif;
   box-sizing:border-box;
@@ -14,18 +15,18 @@
     --bg:#000; --surface:#112430; --text:#E6EEF3; --muted:#9AB0BF; --line:#21394A;
     --accent:#35B6E8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
     --bg-image:url("bg.jpg");
-    --bg-overlay:rgba(0,0,0,.65);
+    --bg-overlay:rgba(0,0,0,.65); --body-weight:400;
   }
 }
 :root[data-theme="dark"]{
   --bg:#000; --surface:#112430; --text:#E6EEF3; --muted:#9AB0BF; --line:#21394A;
   --accent:#35B6E8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
   --bg-image:url("bg.jpg");
-  --bg-overlay:rgba(0,0,0,.65);
+  --bg-overlay:rgba(0,0,0,.65); --body-weight:400;
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-behavior:smooth;scroll-padding-top:calc(96px + env(safe-area-inset-top,0px))}
-body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--bg-overlay),var(--bg-overlay)),var(--bg-image);background-size:cover;background-position:center;background-repeat:no-repeat;background-attachment:fixed;color:var(--text);font:400 1.0625rem/1.65 var(--body);transition:background .25s,color .25s}
+body{margin:0;background-color:var(--bg);color:var(--text);font:var(--body-weight) 1.0625rem/1.65 var(--body);transition:background .25s,color .25s}
 a{color:inherit}
 :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
 .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
@@ -132,9 +133,9 @@ nav a[aria-current]{color:var(--text);font-weight:600;border-bottom:2px solid va
 .ov b{font:700 1.2rem var(--display)}.ov span{color:var(--muted)}.ov:hover b{color:var(--accent)}
 .contact-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px}
 form label{display:block;font-weight:600;margin:0 0 16px}
-form input,form select,form textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;font:inherit;font-weight:400;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:8px}
+form input,form select,form textarea{display:block;width:100%;margin-top:6px;padding:12px 14px;font:inherit;font-weight:var(--body-weight);color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:8px}
 form textarea{min-height:140px;resize:vertical}
-form .opt{font-weight:400;color:var(--muted)}
+form .opt{font-weight:var(--body-weight);color:var(--muted)}
 form button{border:0;cursor:pointer}
 .details{list-style:none;margin:0 0 36px;padding:0}
 .details li{padding:12px 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:2px 12px;justify-content:space-between}
@@ -324,15 +325,30 @@ footer i{width:1.2em;text-align:center;margin-right:4px}
 /* ---------- Service multi-select dropdown ---------- */
 .ms{position:relative;margin:0 0 16px}
 .ms-label{display:block;font-weight:600;margin:0 0 6px}
-.ms-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:12px 14px;font:inherit;font-weight:400;text-align:left;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.ms-btn{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:12px 14px;font:inherit;font-weight:var(--body-weight);text-align:left;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:8px;cursor:pointer}
 .ms-btn:hover,.ms.open .ms-btn{border-color:var(--accent)}
 .ms-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ms.open .dd-chev{transform:rotate(180deg)}
 .ms-menu{display:none;position:absolute;left:0;right:0;top:100%;margin-top:6px;padding:6px;background:var(--bg);border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.18);z-index:15}
 .ms.open .ms-menu{display:block}
-form .ms-menu label{display:flex;align-items:center;gap:10px;font-weight:400;margin:0;padding:10px 12px;border-radius:8px;cursor:pointer}
+form .ms-menu label{display:flex;align-items:center;gap:10px;font-weight:var(--body-weight);margin:0;padding:10px 12px;border-radius:8px;cursor:pointer}
 form .ms-menu label:hover{background:var(--surface)}
 form .ms-menu input{display:inline-block;width:18px;height:18px;margin:0;padding:0;flex:none;accent-color:var(--accent)}
 .ms-error{margin:6px 0 0;color:#C62828;font-weight:600;font-size:.9rem}
 :root[data-theme="dark"] .ms-error{color:#FF8A80}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ms-error{color:#FF8A80}}
+
+/* ---------- Blurred theme background ---------- */
+/* Change the blur strength here (0 = sharp) */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-40px;
+  z-index:-1;
+  background-image:linear-gradient(var(--bg-overlay),var(--bg-overlay)),var(--bg-image);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  filter:blur(14px);
+  pointer-events:none;
+}
