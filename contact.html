@@ -45,7 +45,19 @@
 <label>Name<input name="name" type="text" required autocomplete="name"></label>
 <label>Email<input name="email" type="email" required autocomplete="email"></label>
 <label>Phone <span class="opt">(optional)</span><input name="phone" type="tel" autocomplete="tel"></label>
-<label>Service of interest<select name="service" required><option value="" disabled selected>Choose a service</option><option>Vulnerability Assessment</option><option>Penetration Testing</option><option>Cybersecurity Consulting</option><option>Security Awareness &amp; Training</option><option>Surveillance &amp; Access Control</option><option>Not sure yet</option></select></label>
+<div class="ms" id="service-ms">
+<span class="ms-label" id="service-label">Services of interest <span class="opt">(select all that apply)</span></span>
+<button class="ms-btn" id="service-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="service-menu" aria-labelledby="service-label service-btn"><span class="ms-text">Choose services</span><svg class="dd-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<div class="ms-menu" id="service-menu" role="group" aria-label="Services of interest">
+<label><input type="checkbox" name="service" value="Vulnerability Assessment"> Vulnerability Assessment</label>
+<label><input type="checkbox" name="service" value="Penetration Testing"> Penetration Testing</label>
+<label><input type="checkbox" name="service" value="Cybersecurity Consulting"> Cybersecurity Consulting</label>
+<label><input type="checkbox" name="service" value="Security Awareness &amp; Training"> Security Awareness &amp; Training</label>
+<label><input type="checkbox" name="service" value="Surveillance &amp; Access Control"> Surveillance &amp; Access Control</label>
+<label><input type="checkbox" name="service" value="Not sure yet"> Not sure yet</label>
+</div>
+<p class="ms-error" id="service-error" role="alert" hidden>Please select at least one service.</p>
+</div>
 <label>Message<textarea name="message" required></textarea></label>
 <button class="btn" type="submit">Send message</button>
 </form>
@@ -86,5 +98,30 @@
   </div>
 </footer>
 <script src="assets/script.js"></script>
+<script>
+// Multi-select dropdown with checkboxes
+(function(){
+  var wrap=document.getElementById('service-ms'); if(!wrap) return;
+  var btn=document.getElementById('service-btn'), txt=btn.querySelector('.ms-text'),
+      err=document.getElementById('service-error'), form=document.getElementById('contact-form'),
+      boxes=wrap.querySelectorAll('input[name="service"]');
+  function set(o){wrap.classList.toggle('open',o);btn.setAttribute('aria-expanded',o);}
+  function picked(){return Array.prototype.filter.call(boxes,function(b){return b.checked;});}
+  function update(){
+    var p=picked();
+    txt.textContent=p.length===0?'Choose services':(p.length<=2?p.map(function(b){return b.value;}).join(', '):p.length+' services selected');
+    if(p.length) err.hidden=true;
+  }
+  btn.addEventListener('click',function(){set(!wrap.classList.contains('open'));});
+  document.addEventListener('click',function(e){if(!wrap.contains(e.target)) set(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&wrap.classList.contains('open')){set(false);btn.focus();}});
+  boxes.forEach(function(b){b.addEventListener('change',update);});
+  // Require at least one service (capture phase so it runs before the mailto handler)
+  form.addEventListener('submit',function(e){
+    if(!picked().length){e.preventDefault();e.stopImmediatePropagation();err.hidden=false;set(true);}
+  },true);
+  update();
+})();
+</script>
 </body>
 </html>
