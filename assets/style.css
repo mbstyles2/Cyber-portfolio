@@ -13,14 +13,15 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#000; --surface:#112430; --text:#E6EEF3; --muted:#9AB0BF; --line:#21394A;
-    --accent:#35B6E8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
+    --accent:#1B6FA8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
     --bg-image:url("bg.jpg");
     --bg-overlay:rgba(0,0,0,.65); --body-weight:400;
+    /* --accent:#35B6E8 */
   }
 }
 :root[data-theme="dark"]{
   --bg:#000; --surface:#112430; --text:#E6EEF3; --muted:#9AB0BF; --line:#21394A;
-  --accent:#35B6E8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
+  --accent:#1B6FA8; --accent-ink:#04141C; --tick:#35B6E8; --empty:#183040;
   --bg-image:url("bg.jpg");
   --bg-overlay:rgba(0,0,0,.65); --body-weight:400;
 }
