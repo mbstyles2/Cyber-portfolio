@@ -112,9 +112,6 @@
 <script>
 // Multi-select dropdown with checkboxes
 (function(){
-  // Replace the form with a clean copy so any old mailto handler from script.js is removed
-  var oldForm=document.getElementById('contact-form'); if(!oldForm) return;
-  oldForm.parentNode.replaceChild(oldForm.cloneNode(true),oldForm);
   var wrap=document.getElementById('service-ms'); if(!wrap) return;
   var btn=document.getElementById('service-btn'), txt=btn.querySelector('.ms-text'),
       err=document.getElementById('service-error'), form=document.getElementById('contact-form'),
