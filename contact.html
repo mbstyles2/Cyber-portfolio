@@ -10,6 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+.form-status{margin:16px 0 0;padding:12px 14px;border-radius:8px;border:1px solid;font-weight:500;color:inherit}
+.form-status.ok{border-color:#1f9d55;background:rgba(31,157,85,.12)}
+.form-status.err{border-color:#d64545;background:rgba(214,69,69,.12)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+</style>
 </head>
 <body>
 <header>
@@ -41,7 +48,7 @@
 <section style="border-top:0"><div class="wrap"><div class="contact-grid">
 <div><p style="margin:0 0 24px;color:var(--muted)">Tell us a little about your needs and we'll get back to you.</p>
   
-<form id="contact-form" action="" method="post">
+<form id="contact-form" method="post">
 <label>Name<input name="name" type="text" required autocomplete="name"></label>
 <label>Email<input name="email" type="email" required autocomplete="email"></label>
 <label>Phone <span class="opt"></span><input name="phone" type="tel" autocomplete="tel"></label>
@@ -59,7 +66,10 @@
 <p class="ms-error" id="service-error" role="alert" hidden>Please select at least one service.</p>
 </div>
 <label>Message<textarea name="message" required></textarea></label>
+<div class="hp" aria-hidden="true"><input name="website" type="text" tabindex="-1" autocomplete="off"></div>
+<div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITE_KEY" data-theme="auto"></div>
 <button class="btn" type="submit">Send message</button>
+<p class="form-status" id="form-status" role="status" aria-live="polite" hidden></p>
 </form>
 </div>
 
@@ -97,10 +107,14 @@
     </div>
   </div>
 </footer>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script src="assets/script.js"></script>
 <script>
 // Multi-select dropdown with checkboxes
 (function(){
+  // Replace the form with a clean copy so any old mailto handler from script.js is removed
+  var oldForm=document.getElementById('contact-form'); if(!oldForm) return;
+  oldForm.parentNode.replaceChild(oldForm.cloneNode(true),oldForm);
   var wrap=document.getElementById('service-ms'); if(!wrap) return;
   var btn=document.getElementById('service-btn'), txt=btn.querySelector('.ms-text'),
       err=document.getElementById('service-error'), form=document.getElementById('contact-form'),
@@ -116,9 +130,35 @@
   document.addEventListener('click',function(e){if(!wrap.contains(e.target)) set(false);});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&wrap.classList.contains('open')){set(false);btn.focus();}});
   boxes.forEach(function(b){b.addEventListener('change',update);});
-  // Require at least one service (capture phase so it runs before the mailto handler)
+  var status=document.getElementById('form-status'),
+      submitBtn=form.querySelector('button[type="submit"]'), sending=false;
+  function show(kind,msg){status.hidden=false;status.className='form-status '+kind;status.textContent=msg;}
   form.addEventListener('submit',function(e){
-    if(!picked().length){e.preventDefault();e.stopImmediatePropagation();err.hidden=false;set(true);}
+    e.preventDefault();e.stopImmediatePropagation();
+    if(sending) return;
+    status.hidden=true;
+    var services=picked().map(function(b){return b.value;});
+    if(!services.length){err.hidden=false;set(true);return;}
+    var fd=new FormData(form);
+    var payload={
+      name:fd.get('name')||'', email:fd.get('email')||'', phone:fd.get('phone')||'',
+      services:services, message:fd.get('message')||'',
+      website:fd.get('website')||'', token:fd.get('cf-turnstile-response')||''
+    };
+    sending=true;submitBtn.disabled=true;submitBtn.textContent='Sending…';
+    fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+      .then(function(r){
+        return r.json().catch(function(){return {};}).then(function(d){return {ok:r.ok&&d.ok===true,d:d};});
+      })
+      .then(function(x){
+        if(x.ok){form.reset();update();show('ok','Thank you! Your message has been sent. We will get back to you soon.');}
+        else{show('err',x.d.error||'Sorry, something went wrong. Please try again, or email us at info@nexfortified.com.');}
+      })
+      .catch(function(){show('err','We could not reach the server. Please check your connection and try again, or email us at info@nexfortified.com.');})
+      .then(function(){
+        sending=false;submitBtn.disabled=false;submitBtn.textContent='Send message';
+        if(window.turnstile){try{window.turnstile.reset();}catch(_){}}
+      });
   },true);
   update();
 })();
