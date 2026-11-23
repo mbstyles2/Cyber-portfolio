@@ -1,0 +1,12 @@
+{
+  // IMPORTANT: change this to the exact name of your Worker in Cloudflare (Workers & Pages list)
+  "name": "silent-bar-b2a4",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-23",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    // Run the Worker first only for the contact endpoint; all other pages are served as files
+    "run_worker_first": ["/api/*"]
+  }
+}
