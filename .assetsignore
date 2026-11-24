@@ -3,6 +3,7 @@
 /wrangler.jsonc
 /functions
 /.wrangler
+/src
 .dev.vars*
 .env*
 node_modules
