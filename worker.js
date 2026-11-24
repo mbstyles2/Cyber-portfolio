@@ -1,6 +1,6 @@
 // Cloudflare Worker entry for the NexFortified site.
 // Handles POST /api/contact and serves everything else as static files.
-import { onRequestPost } from '../functions/api/contact.js';
+import { onRequestPost } from './functions/api/contact.js';
 
 export default {
   async fetch(request, env) {
