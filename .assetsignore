@@ -1,9 +1,7 @@
-# Files that must NOT be published as public website files
-/worker.js
 /wrangler.jsonc
 /functions
-/.wrangler
 /src
+/.wrangler
 .dev.vars*
 .env*
 node_modules
