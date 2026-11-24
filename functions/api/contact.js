@@ -1,5 +1,5 @@
-// Cloudflare Pages Function: POST /api/contact
-// Environment variables (Cloudflare Pages > Settings > Environment variables):
+// POST /api/contact handler, called from src/index.js (Cloudflare Worker)
+// Secrets (Cloudflare dashboard > your Worker > Settings > Variables and Secrets):
 //   RESEND_API_KEY   (required, encrypted secret)
 //   TURNSTILE_SECRET (recommended, encrypted secret)
 
